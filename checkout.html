@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D&A Textiles | Checkout</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#fff8fb;color:#333}
+header{min-height:75px;background:#fff;padding:16px 7%;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.08);gap:15px}
+.logo{color:#b42368;font-size:25px;font-weight:bold}
+.back{color:#d63384;text-decoration:none;font-weight:bold}
+.container{width:90%;max-width:1100px;margin:40px auto}
+.title{color:#b42368;margin-bottom:25px;font-size:30px}
+.checkout-layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:25px}
+.form-card,.order-card,.success{background:#fff;padding:25px;border-radius:14px;box-shadow:0 3px 12px rgba(0,0,0,.07)}
+.form-card h2,.order-card h2{color:#b42368;margin-bottom:22px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-group{display:flex;flex-direction:column}
+.full{grid-column:1/-1}
+label{font-weight:bold;margin-bottom:8px}
+input,textarea{width:100%;padding:13px;border:1px solid #ddd;border-radius:8px;outline:none;font-size:15px}
+input:focus,textarea:focus{border-color:#d63384}
+textarea{min-height:100px;resize:vertical}
+.required{color:#dc3545}
+.order-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #eee}
+.order-item img{width:75px;height:90px;object-fit:cover;border-radius:8px;background:#f5f5f5}
+.order-item-details{flex:1;min-width:0}
+.order-item-details h3{font-size:15px;color:#b42368;margin-bottom:6px;overflow-wrap:anywhere}
+.order-item-details p{font-size:13px;color:#666;margin-bottom:4px}
+.order-item-price{font-weight:bold;color:#d63384;margin-top:4px}
+.summary{margin-top:20px;padding-top:15px;border-top:1px solid #ddd}
+.summary-row,.total{display:flex;justify-content:space-between;gap:10px;margin-bottom:12px}
+.total{border-top:1px solid #ddd;padding-top:15px;margin-top:15px;color:#b42368;font-size:21px;font-weight:bold}
+.payment-box{margin-top:25px;border:1px solid #ddd;padding:15px;border-radius:8px;background:#fff8fb}
+.payment-box label{display:flex;align-items:center;gap:10px;margin:0}
+.payment-box input{width:auto}
+.place-order{width:100%;border:none;background:#d63384;color:#fff;padding:15px;border-radius:8px;margin-top:22px;font-size:17px;cursor:pointer}
+.place-order:hover{background:#b42368}
+.place-order:disabled{opacity:.65;cursor:not-allowed}
+.success{display:none;text-align:center;padding:60px 25px}
+.success-icon{font-size:60px;margin-bottom:15px}
+.success h2{color:#198754;margin-bottom:12px}
+.order-number{color:#b42368;font-weight:bold;margin:15px 0}
+.home-btn{display:inline-block;background:#d63384;color:#fff;text-decoration:none;padding:12px 25px;border-radius:8px;margin-top:15px}
+.notice{display:none;padding:12px 14px;border-radius:8px;margin:0 0 18px;font-size:14px}
+.notice.error{display:block;background:#fff0f0;color:#a61b1b;border:1px solid #f3b6b6}
+.notice.info{display:block;background:#fff8e6;color:#805b00;border:1px solid #f2d48c}
+.empty-cart{background:#fff;padding:25px;border-radius:12px}
+@media(max-width:800px){.checkout-layout{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.container{width:92%;margin:25px auto}header{padding:15px 4%}.logo{font-size:21px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">D&amp;A Textiles</div>
+  <a href="cart.html" class="back">← Back to Cart</a>
+</header>
+
+<main class="container">
+  <h1 class="title">🛍️ Checkout</h1>
+  <div id="notice" class="notice" role="status"></div>
+
+  <div id="checkoutArea" class="checkout-layout">
+    <section class="form-card">
+      <h2>Delivery Details</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="customerName">Full Name <span class="required">*</span></label>
+          <input type="text" id="customerName" autocomplete="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="customerPhone">Phone Number <span class="required">*</span></label>
+          <input type="tel" id="customerPhone" autocomplete="tel" inputmode="numeric" placeholder="10 digit mobile number" maxlength="10" required>
+        </div>
+        <div class="form-group full">
+          <label for="customerEmail">Email Address</label>
+          <input type="email" id="customerEmail" autocomplete="email" placeholder="example@gmail.com">
+        </div>
+        <div class="form-group full">
+          <label for="customerAddress">Delivery Address <span class="required">*</span></label>
+          <textarea id="customerAddress" autocomplete="street-address" placeholder="House No, Street, Area" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="customerCity">City <span class="required">*</span></label>
+          <input type="text" id="customerCity" autocomplete="address-level2" placeholder="Chennai" required>
+        </div>
+        <div class="form-group">
+          <label for="customerPincode">Pincode <span class="required">*</span></label>
+          <input type="text" id="customerPincode" autocomplete="postal-code" inputmode="numeric" placeholder="600001" maxlength="6" required>
+        </div>
+      </div>
+
+      <div class="payment-box">
+        <label><input type="radio" name="payment" value="Cash on Delivery" checked> 💵 Cash on Delivery</label>
+      </div>
+      <button id="placeOrderButton" class="place-order" type="button" onclick="placeOrder()">📦 Place Order</button>
+    </section>
+
+    <aside class="order-card">
+      <h2>Order Summary</h2>
+      <div id="orderItems"></div>
+      <div class="summary">
+        <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+        <div class="summary-row"><span>Delivery</span><span id="delivery">₹0</span></div>
+        <div class="total"><span>Total</span><span id="total">₹0</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <section id="success" class="success">
+    <div class="success-icon">✅</div>
+    <h2>Order Placed Successfully!</h2>
+    <p>Thank you for shopping with D&amp;A Textiles.</p>
+    <div class="order-number">Order ID: <span id="orderId"></span></div>
+    <p>Our team will contact you regarding your delivery.</p>
+    <a href="index.html" class="home-btn">Continue Shopping</a>
+  </section>
+</main>
+
+<script>
+const API_BASE = "https://nighty-shop-backend.onrender.com";
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+function showNotice(message, type = "error") {
+  const box = document.getElementById("notice");
+  box.textContent = message;
+  box.className = "notice " + type;
+}
+function clearNotice() {
+  const box = document.getElementById("notice");
+  box.textContent = "";
+  box.className = "notice";
+}
+function money(value) {
+  return "₹" + Number(value || 0).toLocaleString("en-IN", {maximumFractionDigits: 2});
+}
+function getItemImage(item) {
+  const raw = item.image || item.imageUrl || item.imageURL || "";
+  if (!raw) return "";
+  if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) return raw;
+  return "http://localhost:8080" + (raw.startsWith("/") ? raw : "/" + raw);
+}
+function calculateTotals() {
+  const subtotal = cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0), 0);
+  const delivery = subtotal === 0 || subtotal >= 999 ? 0 : 50;
+  return {subtotal, delivery, total: subtotal + delivery};
+}
+function displayOrder() {
+  const container = document.getElementById("orderItems");
+  container.replaceChildren();
+
+  if (!cart.length) {
+    container.innerHTML = '<p>Your cart is empty. <a href="index.html">Continue shopping</a></p>';
+    document.getElementById("subtotal").textContent = "₹0";
+    document.getElementById("delivery").textContent = "₹0";
+    document.getElementById("total").textContent = "₹0";
+    document.getElementById("placeOrderButton").disabled = true;
+    return;
+  }
+
+  document.getElementById("placeOrderButton").disabled = false;
+  cart.forEach(item => {
+    const itemTotal = Number(item.price || 0) * Number(item.quantity || 0);
+    const div = document.createElement("div");
+    div.className = "order-item";
+
+    const img = document.createElement("img");
+    img.src = getItemImage(item);
+    img.alt = item.name || "Nighty";
+    img.onerror = () => { img.style.display = "none"; };
+
+    const details = document.createElement("div");
+    details.className = "order-item-details";
+    const title = document.createElement("h3");
+    title.textContent = item.name || item.productName || "Product";
+    const colour = document.createElement("p");
+    colour.textContent = "Colour: " + (item.color || item.colorName || "—");
+    const size = document.createElement("p");
+    size.textContent = "Size: " + (item.size || "—");
+    const quantity = document.createElement("p");
+    quantity.textContent = "Quantity: " + Number(item.quantity || 0);
+    const price = document.createElement("div");
+    price.className = "order-item-price";
+    price.textContent = money(itemTotal);
+    details.append(title, colour, size, quantity, price);
+    div.append(img, details);
+    container.appendChild(div);
+  });
+
+  const totals = calculateTotals();
+  document.getElementById("subtotal").textContent = money(totals.subtotal);
+  document.getElementById("delivery").textContent = totals.delivery === 0 ? "FREE" : money(totals.delivery);
+  document.getElementById("total").textContent = money(totals.total);
+}
+
+function readForm() {
+  return {
+    name: document.getElementById("customerName").value.trim(),
+    phone: document.getElementById("customerPhone").value.trim(),
+    email: document.getElementById("customerEmail").value.trim(),
+    address: document.getElementById("customerAddress").value.trim(),
+    city: document.getElementById("customerCity").value.trim(),
+    pincode: document.getElementById("customerPincode").value.trim()
+  };
+}
+function validate(form) {
+  if (!form.name) return "Please enter your name.";
+  if (!/^[0-9]{10}$/.test(form.phone)) return "Enter a valid 10-digit phone number.";
+  if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return "Enter a valid email address.";
+  if (!form.address) return "Please enter your delivery address.";
+  if (!form.city) return "Please enter your city.";
+  if (!/^[0-9]{6}$/.test(form.pincode)) return "Enter a valid 6-digit pincode.";
+  if (!cart.length) return "Your cart is empty.";
+  for (const item of cart) {
+    if (!Number.isFinite(Number(item.price)) || Number(item.price) < 0 || !Number.isFinite(Number(item.quantity)) || Number(item.quantity) < 1) {
+      return "A cart item has invalid price or quantity. Please return to the cart and check it.";
+    }
+  }
+  return "";
+}
+
+async function placeOrder() {
+  clearNotice();
+  const button = document.getElementById("placeOrderButton");
+  const form = readForm();
+  const error = validate(form);
+  if (error) {
+    showNotice(error);
+    return;
+  }
+
+  const totals = calculateTotals();
+
+  /*
+    Expected backend request:
+    POST http://localhost:8080/api/orders
+    JSON fields: customerName, customerPhone, customerEmail, address, city,
+    pincode, items, subtotal, deliveryCharge, total, paymentMethod, status.
+    Each item includes productId (when available), productName, colorName,
+    size, quantity, price.
+  */
+
+const payload = {
+    customerName: form.name,
+    phone: form.phone,
+    email: form.email,
+    address: form.address,
+    city: form.city,
+    pincode: form.pincode,
+
+    itemsJson: JSON.stringify(
+        cart.map(item => ({
+            productId: item.productId ?? item.id ?? null,
+            productName: item.name || item.productName || "Product",
+            colorName: item.color || item.colorName || "",
+            size: item.size || "",
+            quantity: Number(item.quantity),
+            price: Number(item.price)
+        }))
+    ),
+
+    total: Number(totals.total),
+    status: "Pending"
+};
+
+
+  button.disabled = true;
+  button.textContent = "Placing Order...";
+  try {
+    const response = await fetch(`${API_BASE}/api/orders`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const responseText = await response.text();
+      throw new Error(responseText || `Server returned HTTP ${response.status}`);
+    }
+
+    let savedOrder = {};
+    const responseText = await response.text();
+    if (responseText) {
+      try { savedOrder = JSON.parse(responseText); } catch { savedOrder = {}; }
+    }
+
+    const generatedId = savedOrder.id ?? savedOrder.orderId ?? savedOrder.orderNumber;
+    const displayId = generatedId ? String(generatedId) : ("DA" + Date.now().toString().slice(-8));
+
+    // Local copy is for this browser's history only; MySQL order is saved by the backend.
+    const localOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+    localOrders.push({
+      id: displayId,
+      date: new Date().toLocaleString(),
+      customer: form,
+      items: cart,
+      subtotal: totals.subtotal,
+      delivery: totals.delivery,
+      total: totals.total,
+      payment: "Cash on Delivery",
+      status: "Pending"
+    });
+    localStorage.setItem("orders", JSON.stringify(localOrders));
+    localStorage.removeItem("cart");
+    cart = [];
+
+    document.getElementById("checkoutArea").style.display = "none";
+    document.getElementById("orderId").textContent = displayId;
+    document.getElementById("success").style.display = "block";
+    clearNotice();
+  } catch (err) {
+    console.error("Order request failed:", err);
+    showNotice("Order backend-la save aagala. Backend running-ah irukka check pannu. Error: " + (err.message || "Network error"), "error");
+  } finally {
+    button.disabled = cart.length === 0;
+    button.textContent = "📦 Place Order";
+  }
+}
+
+displayOrder();
+</script>
+</body>
+</html>

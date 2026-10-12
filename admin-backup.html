@@ -1,0 +1,3339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>D&A Textiles - Admin Dashboard</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+            background: #f6f7fb;
+            color: #333;
+        }
+
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 240px;
+            height: 100vh;
+
+            background: #2d1824;
+
+            color: white;
+
+            padding: 25px 15px;
+
+            z-index: 100;
+
+        }
+
+
+        .logo {
+
+            text-align: center;
+
+            color: #ff72ae;
+
+            font-size: 24px;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .menu {
+            list-style: none;
+        }
+
+
+        .menu li {
+            margin-bottom: 8px;
+        }
+
+
+        .menu a {
+
+            display: block;
+
+            padding: 14px 15px;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+        }
+
+
+        .menu a:hover,
+        .menu a.active {
+
+            background: #d63384;
+
+        }
+
+
+        .logout {
+
+            position: absolute;
+
+            bottom: 25px;
+
+            left: 15px;
+
+            right: 15px;
+
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main {
+
+            margin-left: 240px;
+
+            padding: 30px;
+
+        }
+
+
+        .topbar {
+
+            background: white;
+
+            padding: 18px 25px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            box-shadow:
+                0 2px 10px rgba(0,0,0,0.06);
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .topbar h1 {
+
+            color: #b42368;
+
+        }
+
+
+        /* ================= SECTIONS ================= */
+
+        .section {
+            display: none;
+        }
+
+
+        .section.active {
+            display: block;
+        }
+
+
+        .section-title {
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .section-title h2 {
+
+            color: #b42368;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .section-title p {
+
+            color: #777;
+
+        }
+
+
+        /* ================= DASHBOARD ================= */
+
+        .dashboard-cards {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .dashboard-card {
+
+            background: white;
+
+            padding: 24px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 2px 10px rgba(0,0,0,0.06);
+
+        }
+
+
+        .dashboard-card h3 {
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .dashboard-card p {
+
+            color: #d63384;
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+        }
+
+
+        /* ================= FORM ================= */
+
+        .form-container {
+
+            background: white;
+
+            padding: 28px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 2px 12px rgba(0,0,0,0.06);
+
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .full {
+
+            grid-column: 1 / -1;
+
+        }
+
+
+        label {
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        input,
+        textarea,
+        select {
+
+            padding: 13px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 15px;
+
+        }
+
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            border-color: #d63384;
+
+        }
+
+
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+
+        }
+
+
+        /* ================= COLOUR ================= */
+
+        .color-title {
+
+            color: #b42368;
+
+            margin-top: 28px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .color-box {
+
+            border: 1px solid #ddd;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            margin-bottom: 15px;
+
+            background: #fff;
+
+        }
+
+
+        .color-heading {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .color-heading h3 {
+
+            color: #b42368;
+
+        }
+
+
+        .color-fields {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        /* ================= IMAGE UPLOAD ================= */
+
+        .file-upload {
+
+            border: 2px dashed #d63384;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            text-align: center;
+
+            background: #fff7fb;
+
+        }
+
+
+        .file-upload input {
+
+            width: 100%;
+
+            border: none;
+
+            cursor: pointer;
+
+        }
+
+
+        .file-upload p {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-top: 8px;
+
+        }
+
+
+        .image-preview {
+
+            display: none;
+
+            width: 130px;
+
+            height: 160px;
+
+            object-fit: cover;
+
+            border-radius: 10px;
+
+            margin: 15px auto 0;
+
+            border: 3px solid #d63384;
+
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .add-color-btn {
+
+            background: #6f42c1;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            margin: 5px 0 20px;
+
+        }
+
+
+        .save-btn {
+
+            background: #d63384;
+
+            color: white;
+
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 16px;
+
+        }
+
+
+        .save-btn:hover {
+
+            background: #b42368;
+
+        }
+
+
+        .remove-btn {
+
+            background: #dc3545;
+
+            color: white;
+
+            border: none;
+
+            padding: 8px 12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error-message {
+
+            color: #dc3545;
+
+            font-size: 13px;
+
+            margin-top: 6px;
+
+        }
+
+
+        /* ================= SUCCESS MESSAGE ================= */
+
+        .page-message {
+
+            position: fixed;
+
+            top: 25px;
+
+            right: 25px;
+
+            background: #d63384;
+
+            color: white;
+
+            padding: 14px 22px;
+
+            border-radius: 8px;
+
+            z-index: 9999;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.2);
+
+        }
+
+
+        /* ================= PRODUCTS ================= */
+
+        .table-container {
+
+            background: white;
+
+            border-radius: 12px;
+
+            overflow-x: auto;
+
+            box-shadow:
+                0 2px 10px rgba(0,0,0,0.06);
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th,
+        td {
+
+            padding: 15px;
+
+            border-bottom: 1px solid #eee;
+
+            text-align: left;
+
+        }
+
+
+        th {
+
+            background: #fff0f6;
+
+            color: #b42368;
+
+        }
+
+
+        .product-img {
+
+            width: 70px;
+
+            height: 85px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+        }
+
+
+        .delete-btn {
+
+            background: #dc3545;
+
+            color: white;
+
+            border: none;
+
+            padding: 8px 12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* ================= ORDERS ================= */
+
+        .admin-order {
+
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,0.07);
+
+        }
+
+
+        .order-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            border-bottom: 1px solid #eee;
+
+            padding-bottom: 15px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .order-id {
+
+            color: #b42368;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+        }
+
+
+        .order-date {
+
+            color: #777;
+
+            font-size: 13px;
+
+            margin-top: 5px;
+
+        }
+
+
+        .order-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        .order-box {
+
+            background: #fff8fb;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+        }
+
+
+        .order-box h4 {
+
+            color: #b42368;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .order-box p {
+
+            margin-bottom: 7px;
+
+            color: #555;
+
+        }
+
+
+        .order-product {
+
+            display: flex;
+
+            gap: 15px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid #eee;
+
+        }
+
+
+        .order-product img {
+
+            width: 75px;
+
+            height: 90px;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+        }
+
+
+        .order-product-info {
+
+            flex: 1;
+
+        }
+
+
+        .order-product-info h4 {
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .order-product-info p {
+
+            font-size: 13px;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .order-total {
+
+            text-align: right;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #d63384;
+
+            margin-top: 15px;
+
+        }
+
+
+        .status-row {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-top: 18px;
+
+        }
+
+
+        .status-select {
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            border: 1px solid #ddd;
+
+            outline: none;
+
+            cursor: pointer;
+
+        }
+
+
+        .empty-orders {
+
+            background: white;
+
+            text-align: center;
+
+            padding: 60px 20px;
+
+            border-radius: 14px;
+
+            color: #777;
+
+        }
+
+
+        .empty-orders h3 {
+
+            color: #b42368;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media(max-width: 1000px) {
+
+            .dashboard-cards {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+        }
+
+
+        @media(max-width: 700px) {
+
+            .sidebar {
+
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+            }
+
+
+            .logout {
+
+                position: relative;
+
+                left: 0;
+
+                right: 0;
+
+                bottom: 0;
+
+                margin-top: 20px;
+
+            }
+
+
+            .main {
+
+                margin-left: 0;
+
+                padding: 15px;
+
+            }
+
+
+            .form-grid,
+            .color-fields,
+            .order-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .full {
+
+                grid-column: auto;
+
+            }
+
+
+            .dashboard-cards {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .order-top {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 8px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     SIDEBAR
+================================================== -->
+
+<div class="sidebar">
+
+
+    <h2 class="logo">
+        D&A Textiles
+    </h2>
+
+
+    <ul class="menu">
+
+
+        <li>
+
+            <a
+                class="active"
+                onclick="showSection('dashboard', this)">
+
+                📊 Dashboard
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                onclick="showSection('addProduct', this)">
+
+                ➕ Add Product
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                onclick="showSection('products', this)">
+
+                👗 Products
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                onclick="showSection('orders', this)">
+
+                📦 Orders
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                onclick="showSection('customers', this)">
+
+                👤 Customers
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="index.html">
+
+                🛍️ View Shop
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a
+                class="logout"
+                onclick="logout()">
+
+                🚪 Logout
+
+            </a>
+
+        </li>
+
+
+    </ul>
+
+</div>
+
+
+
+<!-- ==================================================
+     MAIN
+================================================== -->
+
+<div class="main">
+
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <h1>
+            Admin Dashboard
+        </h1>
+
+
+        <div>
+
+            👤 <b>Admin</b>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         DASHBOARD
+    ================================================== -->
+
+    <section
+        id="dashboard"
+        class="section active">
+
+
+        <div class="section-title">
+
+            <h2>
+                Dashboard Overview
+            </h2>
+
+            <p>
+                Welcome to D&A Textiles Admin Panel
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-cards">
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Products
+                </h3>
+
+                <p id="totalProducts">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Orders
+                </h3>
+
+                <p id="totalOrders">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Pending Orders
+                </h3>
+
+                <p id="pendingOrders">
+                    0
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <h3>
+                    Total Sales
+                </h3>
+
+                <p id="totalSales">
+                    ₹0
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         ADD PRODUCT
+    ================================================== -->
+
+    <section
+        id="addProduct"
+        class="section">
+
+
+        <div class="section-title">
+
+            <h2>
+                ➕ Add New Nighty
+            </h2>
+
+            <p>
+                Add product details, colours and images
+            </p>
+
+        </div>
+
+
+        <div class="form-container">
+
+
+            <div class="form-grid">
+
+
+                <!-- PRODUCT NAME -->
+
+                <div class="form-group">
+
+                    <label>
+                        Product Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productName"
+                        placeholder="Example: Floral Cotton Nighty">
+
+                </div>
+
+
+                <!-- PRICE -->
+
+                <div class="form-group">
+
+                    <label>
+                        Price (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        placeholder="499"
+                        min="1">
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group full">
+
+                    <label>
+                        Description
+                    </label>
+
+                    <textarea
+                        id="productDescription"
+                        placeholder="Enter product description"></textarea>
+
+                </div>
+
+
+                <!-- STOCK -->
+
+                <div class="form-group">
+
+                    <label>
+                        Stock Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productStock"
+                        placeholder="25"
+                        min="1">
+
+                </div>
+
+
+                <!-- SIZE -->
+
+                <div class="form-group">
+
+                    <label>
+                        Available Sizes
+                    </label>
+
+                    <input
+                        type="text"
+                        id="productSizes"
+                        placeholder="M, L, XL, XXL">
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- COLOURS -->
+
+            <h3 class="color-title">
+
+                🎨 Product Colours & Images
+
+            </h3>
+
+
+            <div id="colorContainer">
+
+
+                <div class="color-box">
+
+
+                    <div class="color-heading">
+
+                        <h3>
+                            Colour 1
+                        </h3>
+
+                    </div>
+
+
+                    <div class="color-fields">
+
+
+                        <!-- COLOUR NAME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Colour Name
+                            </label>
+
+                            <input
+                                type="text"
+                                class="colorName"
+                                placeholder="Pink">
+
+                        </div>
+
+
+                        <!-- IMAGE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Upload Nighty Image
+                            </label>
+
+
+                            <div class="file-upload">
+
+                                <input
+                                    type="file"
+                                    class="colorImage"
+                                    accept="image/*"
+                                    onchange="previewImage(this)">
+
+
+                                <p>
+                                    Choose image from your device
+                                </p>
+
+
+                                <img
+                                    class="image-preview">
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ADD COLOUR -->
+
+            <button
+                class="add-color-btn"
+                onclick="addColor()">
+
+                + Add Another Colour
+
+            </button>
+
+
+            <br>
+
+
+            <!-- SAVE -->
+
+            <button
+                class="save-btn"
+                onclick="saveProduct()">
+
+                💾 Save Product
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         PRODUCTS
+    ================================================== -->
+
+    <section
+        id="products"
+        class="section">
+
+
+        <div class="section-title">
+
+            <h2>
+                👗 Product Management
+            </h2>
+
+            <p>
+                View and manage your nighty collection
+            </p>
+
+        </div>
+
+
+        <div class="table-container">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Image
+                        </th>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Sizes
+                        </th>
+
+                        <th>
+                            Colours
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="productTable">
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         ORDERS
+    ================================================== -->
+
+    <section
+        id="orders"
+        class="section">
+
+
+        <div class="section-title">
+
+            <h2>
+                📦 Customer Orders
+            </h2>
+
+            <p>
+                Manage customer orders and delivery status
+            </p>
+
+        </div>
+
+
+        <div id="ordersContainer">
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ==================================================
+         CUSTOMERS
+    ================================================== -->
+
+    <section
+        id="customers"
+        class="section">
+
+
+        <div class="section-title">
+
+            <h2>
+                👤 Customers
+            </h2>
+
+            <p>
+                Customer information from orders
+            </p>
+
+        </div>
+
+
+        <div id="customersContainer">
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+
+<script>
+
+
+/* ==================================================
+   DATA
+================================================== */
+
+
+let products =
+    JSON.parse(
+        localStorage.getItem("products")
+    ) || [];
+
+
+
+/* ==================================================
+   NAVIGATION
+================================================== */
+
+
+function showSection(
+    sectionId,
+    element
+) {
+
+
+    document
+        .querySelectorAll(".section")
+        .forEach(section => {
+
+            section.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(sectionId)
+        .classList.add("active");
+
+
+    document
+        .querySelectorAll(".menu a")
+        .forEach(link => {
+
+            link.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    if (element) {
+
+        element.classList.add(
+            "active"
+        );
+
+    }
+
+
+    displayProducts();
+
+    displayOrders();
+
+    displayCustomers();
+
+    updateDashboard();
+
+}
+
+
+
+/* ==================================================
+   IMAGE PREVIEW
+================================================== */
+
+
+function previewImage(input) {
+
+
+    const file =
+        input.files[0];
+
+
+    const preview =
+        input
+        .closest(".file-upload")
+        .querySelector(
+            ".image-preview"
+        );
+
+
+    if (!file) {
+
+        preview.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(event) {
+
+            preview.src =
+                event.target.result;
+
+            preview.style.display =
+                "block";
+
+        };
+
+
+    reader.readAsDataURL(file);
+
+}
+
+
+
+/* ==================================================
+   ADD COLOUR
+================================================== */
+
+
+function addColor() {
+
+
+    const container =
+        document.getElementById(
+            "colorContainer"
+        );
+
+
+    const count =
+        container
+        .querySelectorAll(
+            ".color-box"
+        ).length + 1;
+
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.className =
+        "color-box";
+
+
+    box.innerHTML = `
+
+        <div class="color-heading">
+
+            <h3>
+                Colour ${count}
+            </h3>
+
+
+            <button
+                class="remove-btn"
+                onclick="
+                    this.closest('.color-box').remove()
+                ">
+
+                Remove
+
+            </button>
+
+        </div>
+
+
+        <div class="color-fields">
+
+
+            <div class="form-group">
+
+                <label>
+                    Colour Name
+                </label>
+
+                <input
+                    type="text"
+                    class="colorName"
+                    placeholder="Blue">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Upload Nighty Image
+                </label>
+
+
+                <div class="file-upload">
+
+                    <input
+                        type="file"
+                        class="colorImage"
+                        accept="image/*"
+                        onchange="previewImage(this)">
+
+
+                    <p>
+                        Choose image from your device
+                    </p>
+
+
+                    <img
+                        class="image-preview">
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    container.appendChild(box);
+
+}
+
+
+
+/* ==================================================
+   SAVE PRODUCT
+================================================== */
+
+
+function saveProduct() {
+
+
+    const name =
+        document
+        .getElementById(
+            "productName"
+        )
+        .value
+        .trim();
+
+
+    const price =
+        document
+        .getElementById(
+            "productPrice"
+        )
+        .value;
+
+
+    const description =
+        document
+        .getElementById(
+            "productDescription"
+        )
+        .value
+        .trim();
+
+
+    const stock =
+        document
+        .getElementById(
+            "productStock"
+        )
+        .value;
+
+
+    const sizes =
+        document
+        .getElementById(
+            "productSizes"
+        )
+        .value
+        .split(",")
+        .map(size =>
+            size.trim()
+        )
+        .filter(size =>
+            size !== ""
+        );
+
+
+    clearErrors();
+
+
+    let hasError = false;
+
+
+    /* NAME */
+
+    if (!name) {
+
+        showError(
+            "productName",
+            "Please enter product name"
+        );
+
+        hasError = true;
+
+    }
+
+
+    /* PRICE */
+
+    if (!price || Number(price) <= 0) {
+
+        showError(
+            "productPrice",
+            "Please enter valid price"
+        );
+
+        hasError = true;
+
+    }
+
+
+    /* STOCK */
+
+    if (!stock || Number(stock) < 0) {
+
+        showError(
+            "productStock",
+            "Please enter valid stock"
+        );
+
+        hasError = true;
+
+    }
+
+
+    /* SIZE */
+
+    if (sizes.length === 0) {
+
+        showError(
+            "productSizes",
+            "Enter sizes like M, L, XL, XXL"
+        );
+
+        hasError = true;
+
+    }
+
+
+    if (hasError) {
+        return;
+    }
+
+
+    /* COLOURS */
+
+    const colorBoxes =
+        document.querySelectorAll(
+            ".color-box"
+        );
+
+
+    const colors = [];
+
+    let invalidColor = false;
+
+
+    colorBoxes.forEach(box => {
+
+
+        const colorName =
+            box.querySelector(
+                ".colorName"
+            )
+            .value
+            .trim();
+
+
+        const imageInput =
+            box.querySelector(
+                ".colorImage"
+            );
+
+
+        const file =
+            imageInput.files[0];
+
+
+        if (!colorName) {
+
+            showBoxError(
+                box,
+                "Please enter colour name"
+            );
+
+            invalidColor = true;
+
+            return;
+
+        }
+
+
+        if (!file) {
+
+            showBoxError(
+                box,
+                "Please select image"
+            );
+
+            invalidColor = true;
+
+            return;
+
+        }
+
+
+        colors.push({
+
+            name:
+                colorName,
+
+            file:
+                file
+
+        });
+
+    });
+
+
+    if (invalidColor) {
+        return;
+    }
+
+
+    if (colors.length === 0) {
+
+        showPageMessage(
+            "Please add at least one colour"
+        );
+
+        return;
+
+    }
+
+
+    /* READ IMAGES */
+
+    const finalColors = [];
+
+    let completed = 0;
+
+
+    colors.forEach(
+        color => {
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(event) {
+
+
+                    finalColors.push({
+
+                        name:
+                            color.name,
+
+                        image:
+                            event.target.result
+
+                    });
+
+
+                    completed++;
+
+
+                    if (
+                        completed ===
+                        colors.length
+                    ) {
+
+                        finishProduct(
+                            finalColors
+                        );
+
+                    }
+
+                };
+
+
+            reader.readAsDataURL(
+                color.file
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   FINISH PRODUCT
+================================================== */
+
+
+function finishProduct(colors) {
+
+
+    const product = {
+
+        id:
+            Date.now(),
+
+        name:
+            document
+            .getElementById(
+                "productName"
+            )
+            .value
+            .trim(),
+
+        price:
+            Number(
+                document
+                .getElementById(
+                    "productPrice"
+                )
+                .value
+            ),
+
+        description:
+            document
+            .getElementById(
+                "productDescription"
+            )
+            .value
+            .trim(),
+
+        stock:
+            Number(
+                document
+                .getElementById(
+                    "productStock"
+                )
+                .value
+            ),
+
+        sizes:
+            document
+            .getElementById(
+                "productSizes"
+            )
+            .value
+            .split(",")
+            .map(size =>
+                size.trim()
+            )
+            .filter(size =>
+                size !== ""
+            ),
+
+        colors:
+            colors
+
+    };
+
+
+    products.push(product);
+
+
+    try {
+
+        localStorage.setItem(
+            "products",
+            JSON.stringify(
+                products
+            )
+        );
+
+    }
+
+    catch(error) {
+
+        products.pop();
+
+        showPageMessage(
+            "Image is too large. Please use smaller images."
+        );
+
+        return;
+
+    }
+
+
+    showPageMessage(
+        "✓ Product added successfully!"
+    );
+
+
+    clearForm();
+
+    displayProducts();
+
+    updateDashboard();
+
+}
+
+
+
+/* ==================================================
+   DISPLAY PRODUCTS
+================================================== */
+
+
+function displayProducts() {
+
+
+    const table =
+        document.getElementById(
+            "productTable"
+        );
+
+
+    if (!table) {
+        return;
+    }
+
+
+    table.innerHTML = "";
+
+
+    products.forEach(
+        product => {
+
+
+            const firstImage =
+                product.colors &&
+                product.colors.length > 0
+
+                ? product.colors[0].image
+
+                : "";
+
+
+            const colors =
+                product.colors
+                .map(color =>
+                    color.name
+                )
+                .join(", ");
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <img
+                        class="product-img"
+                        src="${firstImage}"
+                        alt="${product.name}">
+
+                </td>
+
+
+                <td>
+                    ${product.name}
+                </td>
+
+
+                <td>
+                    ₹${product.price}
+                </td>
+
+
+                <td>
+                    ${product.stock}
+                </td>
+
+
+                <td>
+                    ${product.sizes.join(", ")}
+                </td>
+
+
+                <td>
+                    ${colors}
+                </td>
+
+
+                <td>
+
+                    <button
+                        class="delete-btn"
+                        onclick="
+                            deleteProduct(${product.id})
+                        ">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+
+            table.appendChild(row);
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   DELETE PRODUCT
+================================================== */
+
+
+function deleteProduct(id) {
+
+
+    products =
+        products.filter(
+            product =>
+                product.id !== id
+        );
+
+
+    localStorage.setItem(
+        "products",
+        JSON.stringify(
+            products
+        )
+    );
+
+
+    displayProducts();
+
+    updateDashboard();
+
+    showPageMessage(
+        "Product deleted"
+    );
+
+}
+
+
+
+/* ==================================================
+   ORDERS
+================================================== */
+
+
+function displayOrders() {
+
+
+    const container =
+        document.getElementById(
+            "ordersContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const orders =
+        JSON.parse(
+            localStorage.getItem(
+                "orders"
+            )
+        ) || [];
+
+
+    container.innerHTML = "";
+
+
+    if (orders.length === 0) {
+
+
+        container.innerHTML = `
+
+            <div class="empty-orders">
+
+                <h3>
+                    📦 No Orders Yet
+                </h3>
+
+                <p>
+                    Customer orders will appear here.
+                </p>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    orders
+        .slice()
+        .reverse()
+        .forEach(
+            order => {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "admin-order";
+
+
+                let productsHTML = "";
+
+
+                order.items.forEach(
+                    item => {
+
+
+                        productsHTML += `
+
+                            <div class="order-product">
+
+
+                                <img
+                                    src="${item.image}"
+                                    alt="${item.name}">
+
+
+                                <div
+                                    class="order-product-info">
+
+
+                                    <h4>
+                                        ${item.name}
+                                    </h4>
+
+
+                                    <p>
+                                        🎨 Colour:
+                                        <b>
+                                            ${item.color}
+                                        </b>
+                                    </p>
+
+
+                                    <p>
+                                        📏 Size:
+                                        <b>
+                                            ${item.size}
+                                        </b>
+                                    </p>
+
+
+                                    <p>
+                                        🔢 Quantity:
+                                        <b>
+                                            ${item.quantity}
+                                        </b>
+                                    </p>
+
+
+                                    <p>
+                                        💰 Price:
+                                        <b>
+                                            ₹${item.price}
+                                        </b>
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+                        `;
+
+                    }
+                );
+
+
+                card.innerHTML = `
+
+                    <div class="order-top">
+
+
+                        <div>
+
+                            <div class="order-id">
+
+                                Order #${order.id}
+
+                            </div>
+
+
+                            <div class="order-date">
+
+                                ${order.date}
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="order-grid">
+
+
+                        <!-- CUSTOMER -->
+
+                        <div class="order-box">
+
+                            <h4>
+                                👤 Customer Details
+                            </h4>
+
+
+                            <p>
+
+                                <b>
+                                    Name:
+                                </b>
+
+                                ${order.customer.name}
+
+                            </p>
+
+
+                            <p>
+
+                                <b>
+                                    Phone:
+                                </b>
+
+                                ${order.customer.phone}
+
+                            </p>
+
+
+                            <p>
+
+                                <b>
+                                    Email:
+                                </b>
+
+                                ${
+                                    order.customer.email
+                                    ||
+                                    "Not provided"
+                                }
+
+                            </p>
+
+
+                        </div>
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="order-box">
+
+                            <h4>
+                                📍 Delivery Address
+                            </h4>
+
+
+                            <p>
+                                ${order.customer.address}
+                            </p>
+
+
+                            <p>
+
+                                ${order.customer.city}
+
+                                -
+
+                                ${order.customer.pincode}
+
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- PRODUCTS -->
+
+                    <div
+                        class="order-box"
+                        style="margin-top:20px;">
+
+
+                        <h4>
+                            👗 Ordered Products
+                        </h4>
+
+
+                        ${productsHTML}
+
+
+                        <div class="order-total">
+
+                            Total:
+                            ₹${order.total}
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="status-row">
+
+
+                        <strong>
+                            Order Status:
+                        </strong>
+
+
+                        <select
+                            class="status-select"
+                            onchange="
+                                updateOrderStatus(
+                                    '${order.id}',
+                                    this.value
+                                )
+                            ">
+
+
+                            <option
+                                value="Pending"
+                                ${
+                                    order.status ===
+                                    "Pending"
+                                    ? "selected"
+                                    : ""
+                                }>
+
+                                Pending
+
+                            </option>
+
+
+                            <option
+                                value="Confirmed"
+                                ${
+                                    order.status ===
+                                    "Confirmed"
+                                    ? "selected"
+                                    : ""
+                                }>
+
+                                Confirmed
+
+                            </option>
+
+
+                            <option
+                                value="Packed"
+                                ${
+                                    order.status ===
+                                    "Packed"
+                                    ? "selected"
+                                    : ""
+                                }>
+
+                                Packed
+
+                            </option>
+
+
+                            <option
+                                value="Shipped"
+                                ${
+                                    order.status ===
+                                    "Shipped"
+                                    ? "selected"
+                                    : ""
+                                }>
+
+                                Shipped
+
+                            </option>
+
+
+                            <option
+                                value="Delivered"
+                                ${
+                                    order.status ===
+                                    "Delivered"
+                                    ? "selected"
+                                    : ""
+                                }>
+
+                                Delivered
+
+                            </option>
+
+
+                            <option
+                                value="Cancelled"
+                                ${
+                                    order.status ===
+                                    "Cancelled"
+                                    ? "selected"
+                                    : ""
+                                }>
+
+                                Cancelled
+
+                            </option>
+
+
+                        </select>
+
+
+                    </div>
+
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+}
+
+
+
+/* ==================================================
+   UPDATE ORDER STATUS
+================================================== */
+
+
+function updateOrderStatus(
+    orderId,
+    newStatus
+) {
+
+
+    let orders =
+        JSON.parse(
+            localStorage.getItem(
+                "orders"
+            )
+        ) || [];
+
+
+    const order =
+        orders.find(
+            item =>
+                item.id === orderId
+        );
+
+
+    if (!order) {
+        return;
+    }
+
+
+    order.status =
+        newStatus;
+
+
+    localStorage.setItem(
+        "orders",
+        JSON.stringify(
+            orders
+        )
+    );
+
+
+    displayOrders();
+
+    updateDashboard();
+
+
+    showPageMessage(
+        "Order status updated"
+    );
+
+}
+
+
+
+/* ==================================================
+   CUSTOMERS
+================================================== */
+
+
+function displayCustomers() {
+
+
+    const container =
+        document.getElementById(
+            "customersContainer"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    const orders =
+        JSON.parse(
+            localStorage.getItem(
+                "orders"
+            )
+        ) || [];
+
+
+    container.innerHTML = "";
+
+
+    if (orders.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-orders">
+
+                <h3>
+                    👤 No Customers Yet
+                </h3>
+
+                <p>
+                    Customer details will appear after orders are placed.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const customers = [];
+
+
+    orders.forEach(
+        order => {
+
+
+            const existing =
+                customers.find(
+                    customer =>
+                        customer.phone ===
+                        order.customer.phone
+                );
+
+
+            if (!existing) {
+
+                customers.push({
+
+                    name:
+                        order.customer.name,
+
+                    phone:
+                        order.customer.phone,
+
+                    email:
+                        order.customer.email,
+
+                    city:
+                        order.customer.city,
+
+                    orders:
+                        1
+
+                });
+
+            }
+
+            else {
+
+                existing.orders++;
+
+            }
+
+        }
+    );
+
+
+    customers.forEach(
+        customer => {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "admin-order";
+
+
+            card.innerHTML = `
+
+                <div class="order-grid">
+
+
+                    <div class="order-box">
+
+                        <h4>
+                            👤 Customer
+                        </h4>
+
+
+                        <p>
+
+                            <b>
+                                Name:
+                            </b>
+
+                            ${customer.name}
+
+                        </p>
+
+
+                        <p>
+
+                            <b>
+                                Phone:
+                            </b>
+
+                            ${customer.phone}
+
+                        </p>
+
+
+                        <p>
+
+                            <b>
+                                Email:
+                            </b>
+
+                            ${
+                                customer.email
+                                ||
+                                "Not provided"
+                            }
+
+                        </p>
+
+                    </div>
+
+
+                    <div class="order-box">
+
+                        <h4>
+                            📦 Order Information
+                        </h4>
+
+
+                        <p>
+
+                            <b>
+                                Total Orders:
+                            </b>
+
+                            ${customer.orders}
+
+                        </p>
+
+
+                        <p>
+
+                            <b>
+                                City:
+                            </b>
+
+                            ${customer.city}
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   DASHBOARD
+================================================== */
+
+
+function updateDashboard() {
+
+
+    const orders =
+        JSON.parse(
+            localStorage.getItem(
+                "orders"
+            )
+        ) || [];
+
+
+    const totalOrders =
+        orders.length;
+
+
+    const pendingOrders =
+        orders.filter(
+            order =>
+                order.status ===
+                "Pending"
+        ).length;
+
+
+    let totalSales = 0;
+
+
+    orders.forEach(
+        order => {
+
+
+            if (
+                order.status !==
+                "Cancelled"
+            ) {
+
+                totalSales +=
+                    Number(
+                        order.total
+                    ) || 0;
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalProducts"
+    ).innerText =
+        products.length;
+
+
+    document.getElementById(
+        "totalOrders"
+    ).innerText =
+        totalOrders;
+
+
+    document.getElementById(
+        "pendingOrders"
+    ).innerText =
+        pendingOrders;
+
+
+    document.getElementById(
+        "totalSales"
+    ).innerText =
+        "₹" +
+        totalSales;
+
+}
+
+
+
+/* ==================================================
+   VALIDATION ERROR
+================================================== */
+
+
+function showError(
+    inputId,
+    message
+) {
+
+
+    const input =
+        document.getElementById(
+            inputId
+        );
+
+
+    input.style.border =
+        "2px solid #dc3545";
+
+
+    const error =
+        document.createElement(
+            "small"
+        );
+
+
+    error.className =
+        "error-message";
+
+
+    error.innerText =
+        message;
+
+
+    input.parentElement.appendChild(
+        error
+    );
+
+}
+
+
+
+/* ==================================================
+   COLOR ERROR
+================================================== */
+
+
+function showBoxError(
+    box,
+    message
+) {
+
+
+    const error =
+        document.createElement(
+            "small"
+        );
+
+
+    error.className =
+        "error-message";
+
+
+    error.innerText =
+        message;
+
+
+    box.appendChild(
+        error
+    );
+
+}
+
+
+
+/* ==================================================
+   CLEAR ERRORS
+================================================== */
+
+
+function clearErrors() {
+
+
+    document
+        .querySelectorAll(
+            ".error-message"
+        )
+        .forEach(
+            error =>
+                error.remove()
+        );
+
+
+    document
+        .querySelectorAll(
+            "input"
+        )
+        .forEach(
+            input =>
+                input.style.border = ""
+        );
+
+}
+
+
+
+/* ==================================================
+   CLEAR FORM
+================================================== */
+
+
+function clearForm() {
+
+
+    document.getElementById(
+        "productName"
+    ).value = "";
+
+
+    document.getElementById(
+        "productPrice"
+    ).value = "";
+
+
+    document.getElementById(
+        "productDescription"
+    ).value = "";
+
+
+    document.getElementById(
+        "productStock"
+    ).value = "";
+
+
+    document.getElementById(
+        "productSizes"
+    ).value = "";
+
+
+    document.getElementById(
+        "colorContainer"
+    ).innerHTML = `
+
+        <div class="color-box">
+
+            <div class="color-heading">
+
+                <h3>
+                    Colour 1
+                </h3>
+
+            </div>
+
+
+            <div class="color-fields">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Colour Name
+                    </label>
+
+                    <input
+                        type="text"
+                        class="colorName"
+                        placeholder="Pink">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Upload Nighty Image
+                    </label>
+
+
+                    <div class="file-upload">
+
+                        <input
+                            type="file"
+                            class="colorImage"
+                            accept="image/*"
+                            onchange="previewImage(this)">
+
+
+                        <p>
+                            Choose image from your device
+                        </p>
+
+
+                        <img
+                            class="image-preview">
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* ==================================================
+   MESSAGE
+================================================== */
+
+
+function showPageMessage(
+    message
+) {
+
+
+    const old =
+        document.getElementById(
+            "pageMessage"
+        );
+
+
+    if (old) {
+        old.remove();
+    }
+
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.id =
+        "pageMessage";
+
+
+    box.className =
+        "page-message";
+
+
+    box.innerText =
+        message;
+
+
+    document.body.appendChild(
+        box
+    );
+
+
+    setTimeout(
+        () => {
+
+            box.remove();
+
+        },
+        2500
+    );
+
+}
+
+
+
+/* ==================================================
+   LOGOUT
+================================================== */
+
+
+function logout() {
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+
+/* ==================================================
+   INITIAL LOAD
+================================================== */
+
+
+displayProducts();
+
+displayOrders();
+
+displayCustomers();
+
+updateDashboard();
+
+
+</script>
+
+
+</body>
+
+</html>

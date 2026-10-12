@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>D&A Textiles - Admin Panel</title>
+
+
+
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+
+body{background:#f4f6fa;color:#1f2937}
+
+.layout{display:flex;min-height:100vh}
+
+.sidebar{width:245px;background:#111827;color:white;padding:24px 14px;position:fixed;inset:0 auto 0 0;overflow-y:auto}
+
+.brand{font-size:21px;font-weight:bold;padding:8px 10px 28px}
+
+.nav-title{font-size:11px;color:#9ca3af;padding:12px 10px}
+
+.nav-link{display:flex;gap:12px;align-items:center;width:100%;padding:13px 12px;margin-bottom:5px;border:0;border-radius:8px;background:transparent;color:#d1d5db;text-align:left;font-size:14px;cursor:pointer}
+
+.nav-link:hover,.nav-link.active{background:#db2777;color:white}
+
+.logout{margin-top:30px;color:#fecaca}
+
+.main{margin-left:245px;width:calc(100% - 245px);min-width:0}
+
+.topbar{height:76px;background:white;display:flex;align-items:center;justify-content:space-between;padding:0 30px;border-bottom:1px solid #e5e7eb}
+
+.topbar h2{font-size:22px}
+
+.admin-label{color:#6b7280;font-size:14px}
+
+.content{padding:28px;max-width:1500px;margin:auto}
+
+.page{display:none}
+
+.page.active{display:block}
+
+.welcome{margin-bottom:22px}
+
+.welcome p{color:#6b7280;margin-top:7px}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-bottom:24px}
+
+.stat,.panel{background:white;border-radius:12px;padding:22px;box-shadow:0 3px 12px #00000008}
+
+.stat p{color:#6b7280;font-size:14px;margin-bottom:13px}
+
+.stat strong{font-size:29px}
+
+.stat small{display:block;color:#6b7280;margin-top:8px}
+
+.panel{margin-bottom:22px}
+
+.panel h3{font-size:19px;margin-bottom:20px}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+.form-group{margin-bottom:17px}
+
+label{display:block;font-size:14px;font-weight:bold;margin-bottom:8px}
+
+input,textarea,select{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:7px;font-size:14px;background:white}
+
+textarea{min-height:90px;resize:vertical}
+
+small{color:#6b7280}
+
+.color-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:12px}
+
+.btn{padding:10px 15px;border:0;border-radius:7px;cursor:pointer;font-weight:bold}
+
+.primary{background:#db2777;color:white}
+
+.secondary{background:#e5e7eb;color:#111827}
+
+.danger{background:#dc2626;color:white}
+
+.success{color:#166534;background:#dcfce7;padding:12px;border-radius:7px;margin-top:14px}
+
+.error{color:#991b1b;background:#fee2e2;padding:12px;border-radius:7px;margin-top:14px}
+
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+
+.product{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+
+.product img{width:100%;height:220px;object-fit:cover}
+
+.product-body{padding:15px}
+
+.product-body h4{margin-bottom:9px}
+
+.product-body p{margin:7px 0;font-size:14px;color:#4b5563}
+
+.product-actions{display:flex;gap:8px;margin-top:12px}
+
+.table-wrap{overflow-x:auto}
+
+table{width:100%;border-collapse:collapse;min-width:650px}
+
+th,td{padding:13px;text-align:left;border-bottom:1px solid #e5e7eb;font-size:14px;vertical-align:top}
+
+th{background:#f9fafb;color:#4b5563}
+
+.order-card{border:1px solid #e5e7eb;border-radius:10px;padding:18px;margin-bottom:16px}
+
+.order-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+
+.order-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:14px;line-height:1.6}
+
+.order-items{margin:14px 0;padding:12px;background:#f9fafb;border-radius:7px;font-size:14px;line-height:1.8}
+
+.status-row{display:flex;gap:12px;align-items:center;margin-top:14px}
+
+.status-row select{max-width:240px}
+
+.badge{padding:6px 10px;border-radius:20px;background:#fef3c7;color:#92400e;font-size:12px}
+
+.empty{padding:25px;text-align:center;color:#6b7280}
+
+.toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+
+.toolbar input{max-width:320px}
+
+@media(max-width:1000px){
+
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+ .products{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+}
+
+@media(max-width:650px){
+
+ .sidebar{width:72px;padding:15px 7px}
+
+ .brand{font-size:0;padding:10px 5px 24px}
+
+ .brand:after{content:"D&A";font-size:17px}
+
+ .nav-title{display:none}
+
+ .nav-link{justify-content:center;font-size:0;padding:14px 4px}
+
+ .nav-link span{font-size:20px}
+
+ .main{margin-left:72px;width:calc(100% - 72px)}
+
+ .topbar{padding:0 14px}
+
+ .topbar h2{font-size:17px}
+
+ .admin-label{display:none}
+
+ .content{padding:14px}
+
+ .stats{grid-template-columns:1fr 1fr;gap:10px}
+
+ .stat{padding:14px}
+
+ .stat strong{font-size:23px}
+
+ .products{grid-template-columns:1fr}
+
+ .form-grid,.order-details{grid-template-columns:1fr}
+
+ .color-row{grid-template-columns:1fr}
+
+ .panel{padding:15px}
+
+}
+
+
+#adminLoginScreen{position:fixed;inset:0;z-index:9999;background:#fdf6fa;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-card{width:100%;max-width:420px;background:white;border-radius:14px;padding:30px;box-shadow:0 8px 30px #0001}
+.login-card h1{color:#be185d;margin-bottom:8px;font-size:25px}
+.login-card p{color:#6b7280;margin-bottom:22px;line-height:1.5}
+.login-card .form-group{margin-bottom:16px}
+.login-card button{width:100%;margin-top:4px}
+#loginMessage{display:none;margin-top:14px;padding:11px;border-radius:7px;background:#fee2e2;color:#991b1b;font-size:14px}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+<div id="adminLoginScreen">
+  <form id="adminLoginForm" class="login-card">
+    <h1>🛍️ D&A Textiles</h1>
+    <p>Admin login pannitu dashboard open pannunga.</p>
+    <div class="form-group">
+      <label for="adminUsername">Username</label>
+      <input id="adminUsername" autocomplete="username" required value="admin" placeholder="Admin username">
+    </div>
+    <div class="form-group">
+      <label for="adminPassword">Password</label>
+      <input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Enter admin password">
+    </div>
+    <button class="btn primary" type="submit" id="loginButton">Login</button>
+    <div id="loginMessage"></div>
+  </form>
+</div>
+
+
+<div class="layout" id="adminApp" style="display:none">
+
+
+
+<aside class="sidebar">
+
+  <div class="brand">🛍️ D&A Textiles</div>
+
+  <div class="nav-title">MAIN MENU</div>
+
+
+
+  <button class="nav-link active" data-page="dashboard">
+
+    <span>📊</span> Dashboard
+
+  </button>
+
+  <button class="nav-link" data-page="addItems">
+
+    <span>➕</span> Add Items
+
+  </button>
+
+  <button class="nav-link" data-page="allProducts">
+
+    <span>📦</span> All Products
+
+  </button>
+
+  <button class="nav-link" data-page="orders">
+
+    <span>🛒</span> Orders
+
+  </button>
+
+  <button class="nav-link" data-page="customers">
+
+    <span>👥</span> Customers
+
+  </button>
+
+  <button class="nav-link logout" onclick="logout()">
+
+    <span>🚪</span> Logout
+
+  </button>
+
+</aside>
+
+
+
+<main class="main">
+
+<header class="topbar">
+
+  <h2 id="pageTitle">Dashboard</h2>
+
+  <span class="admin-label">D&A Textiles · Admin Panel</span>
+
+</header>
+
+
+
+<div class="content">
+
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+  <div class="welcome">
+
+    <h2>Welcome back, Admin! 👋</h2>
+
+    <p>Here is your shop overview.</p>
+
+  </div>
+
+
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <p>Total Products</p>
+
+      <strong id="totalProducts">0</strong>
+
+      <small>Listed products</small>
+
+    </div>
+
+    <div class="stat">
+
+      <p>Total Stock</p>
+
+      <strong id="totalStock">0</strong>
+
+      <small>Available stock units</small>
+
+    </div>
+
+    <div class="stat">
+
+      <p>Total Orders</p>
+
+      <strong id="totalOrders">0</strong>
+
+      <small>Orders received</small>
+
+    </div>
+
+    <div class="stat">
+
+      <p>Pending Orders</p>
+
+      <strong id="pendingOrders">0</strong>
+
+      <small>Need attention</small>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <p>Order Value</p>
+
+      <strong id="totalSales">₹0</strong>
+
+      <small>Total recorded order value</small>
+
+    </div>
+
+    <div class="stat">
+
+      <p>Backend</p>
+
+      <strong id="backendStatus" style="font-size:20px">Checking...</strong>
+
+      <small>Spring Boot connection</small>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="panel">
+
+    <div class="toolbar">
+
+      <h3 style="margin:0">Recent Orders</h3>
+
+      <button class="btn secondary" onclick="showPage('orders')">View All Orders →</button>
+
+    </div>
+
+    <div id="recentOrders"><p class="empty">Loading orders...</p></div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ADD ITEMS -->
+
+<section id="addItems" class="page">
+
+  <div class="panel">
+
+    <h3>➕ Add New Product</h3>
+
+
+
+    <form id="productForm">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label for="productName">Product Name *</label>
+
+          <input id="productName" required placeholder="Cotton Nighty">
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="productPrice">Price (₹) *</label>
+
+          <input id="productPrice" type="number" min="1" required placeholder="499">
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="productStock">Stock *</label>
+
+          <input id="productStock" type="number" min="0" required placeholder="20">
+
+        </div>
+
+        <div class="form-group">
+
+          <label for="productSizes">Available Sizes *</label>
+
+          <select id="productSizes" multiple required style="min-height:110px">
+
+            <option value="S">S</option>
+
+            <option value="M">M</option>
+
+            <option value="L">L</option>
+
+            <option value="XL">XL</option>
+
+            <option value="XXL">XXL</option>
+
+            <option value="3XL">3XL</option>
+
+          </select>
+
+          <small>Ctrl + Click use panni multiple sizes select pannu.</small>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="form-group">
+
+        <label for="productDescription">Description</label>
+
+        <textarea id="productDescription" placeholder="Product details"></textarea>
+
+      </div>
+
+
+
+      <div class="form-group">
+
+        <label>Colours & Images *</label>
+
+        <div id="colorsContainer"></div>
+
+        <button type="button" class="btn secondary" onclick="addColor()">+ Add Colour</button>
+
+      </div>
+
+
+
+      <button type="submit" class="btn primary">Save Product</button>
+
+      <div id="productMessage" style="display:none"></div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+
+<!-- ALL PRODUCTS -->
+
+<section id="allProducts" class="page">
+
+  <div class="panel">
+
+    <div class="toolbar">
+
+      <h3 style="margin:0">📦 All Products</h3>
+
+      <button class="btn primary" onclick="showPage('addItems')">+ Add Item</button>
+
+    </div>
+
+    <div id="productsContainer" class="products">
+
+      <p class="empty">Loading products...</p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ORDERS -->
+
+<section id="orders" class="page">
+
+  <div class="panel">
+
+    <div class="toolbar">
+
+      <h3 style="margin:0">🛒 Customer Orders</h3>
+
+      <button class="btn secondary" onclick="loadOrders()">🔄 Refresh Orders</button>
+
+    </div>
+
+    <div id="ordersSummary" style="margin-bottom:15px;color:#6b7280"></div>
+
+    <div id="ordersList"><p class="empty">Loading orders...</p></div>
+
+  </div>
+
+</section>
+
+
+
+<!-- CUSTOMERS -->
+
+<section id="customers" class="page">
+
+  <div class="panel">
+
+    <div class="toolbar">
+
+      <h3 style="margin:0">👥 Customers</h3>
+
+      <input id="customerSearch" placeholder="Search name or phone..." oninput="renderCustomers()">
+
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Customer</th>
+
+            <th>Phone</th>
+
+            <th>Email</th>
+
+            <th>Address</th>
+
+            <th>Orders</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="customersBody"></tbody>
+
+      </table>
+
+    </div>
+
+    <div id="customersEmpty" class="empty" style="display:none">No customers found.</div>
+
+  </div>
+
+</section>
+
+
+
+</div>
+
+</main>
+
+</div>
+
+
+
+<script>
+
+const API_URL = "https://nighty-shop-backend.onrender.com/api/products";
+
+const ORDERS_URL = "https://nighty-shop-backend.onrender.com/api/orders";
+
+const AUTH_KEY = "daTextilesAdminAuth";
+
+function currentAuthHeader() {
+  const saved = sessionStorage.getItem(AUTH_KEY);
+  return saved ? { "Authorization": "Basic " + saved } : {};
+}
+
+async function authFetch(url, options = {}) {
+  const headers = new Headers(options.headers || {});
+  const auth = currentAuthHeader();
+  Object.entries(auth).forEach(([key, value]) => headers.set(key, value));
+  return fetch(url, { ...options, headers });
+}
+
+document.getElementById("adminLoginForm").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value;
+  const message = document.getElementById("loginMessage");
+  const button = document.getElementById("loginButton");
+  message.style.display = "none";
+  button.disabled = true;
+  button.textContent = "Checking...";
+  try {
+    const token = btoa(unescape(encodeURIComponent(username + ":" + password)));
+    const response = await fetch(ORDERS_URL, {
+      headers: { "Authorization": "Basic " + token }
+    });
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Username/password correct-ah check pannunga.");
+    }
+    if (!response.ok) {
+      throw new Error("Login verify panna mudiyala. Backend config check pannunga.");
+    }
+    sessionStorage.setItem(AUTH_KEY, token);
+    document.getElementById("adminLoginScreen").style.display = "none";
+    document.getElementById("adminApp").style.display = "flex";
+    await loadProducts();
+    await loadOrders();
+    await refreshDashboard();
+  } catch (error) {
+    message.textContent = error.message || "Login failed.";
+    message.style.display = "block";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Login";
+  }
+});
+
+
+
+
+let products = [];
+
+let orders = [];
+
+
+
+const pageNames = {
+
+  dashboard: "Dashboard",
+
+  addItems: "Add Items",
+
+  allProducts: "All Products",
+
+  orders: "Orders",
+
+  customers: "Customers"
+
+};
+
+
+
+// Sidebar navigation
+
+document.querySelectorAll(".nav-link[data-page]").forEach(button => {
+
+  button.addEventListener("click", () => showPage(button.dataset.page));
+
+});
+
+
+
+function showPage(pageId) {
+
+  document.querySelectorAll(".page").forEach(page => {
+
+    page.classList.toggle("active", page.id === pageId);
+
+  });
+
+
+
+  document.querySelectorAll(".nav-link[data-page]").forEach(button => {
+
+    button.classList.toggle("active", button.dataset.page === pageId);
+
+  });
+
+
+
+  document.getElementById("pageTitle").textContent = pageNames[pageId] || "Dashboard";
+
+
+
+  if (pageId === "allProducts") loadProducts();
+
+  if (pageId === "orders") loadOrders();
+
+  if (pageId === "customers") renderCustomers();
+
+  if (pageId === "dashboard") refreshDashboard();
+
+}
+
+
+
+// Colour rows with direct image upload
+
+function addColor() {
+
+  const row = document.createElement("div");
+
+  row.className = "color-row";
+
+
+
+  const name = document.createElement("input");
+
+  name.type = "text";
+
+  name.className = "color-name";
+
+  name.placeholder = "Colour name e.g. Pink";
+
+  name.required = true;
+
+
+
+  const image = document.createElement("input");
+
+  image.type = "file";
+
+  image.className = "color-image";
+
+  image.accept = "image/*";
+
+  image.required = true;
+
+
+
+  const remove = document.createElement("button");
+
+  remove.type = "button";
+
+  remove.className = "btn danger";
+
+  remove.textContent = "Remove";
+
+  remove.onclick = () => row.remove();
+
+
+
+  row.append(name, image, remove);
+
+  document.getElementById("colorsContainer").appendChild(row);
+
+}
+
+
+
+addColor();
+
+
+
+function showProductMessage(text, type) {
+
+  const message = document.getElementById("productMessage");
+
+  message.className = type;
+
+  message.textContent = text;
+
+  message.style.display = "block";
+
+}
+
+
+
+// Save product to Spring Boot
+
+document.getElementById("productForm").addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+
+
+  try {
+
+    const rows = [...document.querySelectorAll(".color-row")];
+
+    if (!rows.length) throw new Error("Add at least one colour.");
+
+
+
+    const colors = [];
+
+    const imageFiles = [];
+
+
+
+    rows.forEach((row, index) => {
+
+      const colorName = row.querySelector(".color-name").value.trim();
+
+      const input = row.querySelector(".color-image");
+
+
+
+      if (!colorName) throw new Error("Enter every colour name.");
+
+      if (!input.files.length) throw new Error("Choose an image for " + colorName + ".");
+
+
+
+      colors.push({ name: colorName, imageIndex: index });
+
+      imageFiles.push(input.files[0]);
+
+    });
+
+
+
+    const sizes = [...document.getElementById("productSizes").selectedOptions]
+
+      .map(option => option.value);
+
+
+
+    if (!sizes.length) throw new Error("Select at least one size.");
+
+
+
+    const productData = {
+
+      name: document.getElementById("productName").value.trim(),
+
+      price: Number(document.getElementById("productPrice").value),
+
+      stock: Number(document.getElementById("productStock").value),
+
+      description: document.getElementById("productDescription").value.trim(),
+
+      sizes,
+
+      colors
+
+    };
+
+
+
+    const formData = new FormData();
+
+    formData.append("product", JSON.stringify(productData));
+
+    imageFiles.forEach(file => formData.append("images", file));
+
+
+
+    const response = await authFetch(API_URL, {
+
+      method: "POST",
+
+      body: formData
+
+    });
+
+
+
+    if (!response.ok) {
+
+      const errorText = await response.text();
+
+      throw new Error("Product save failed: " + (errorText || response.status));
+
+    }
+
+
+
+    const savedProduct = await response.json();
+
+
+
+    showProductMessage("Product added successfully! ID: " + savedProduct.id, "success");
+
+    document.getElementById("productForm").reset();
+
+    document.getElementById("colorsContainer").innerHTML = "";
+
+    addColor();
+
+
+
+    await loadProducts();
+
+    await refreshDashboard();
+
+  } catch (error) {
+
+    showProductMessage(error.message, "error");
+
+    console.error(error);
+
+  }
+
+});
+
+
+
+// Load products from backend
+
+async function loadProducts() {
+
+  const container = document.getElementById("productsContainer");
+
+
+
+  try {
+
+    const response = await authFetch(API_URL);
+
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+
+
+    products = await response.json();
+
+    container.innerHTML = "";
+
+
+
+    if (!products.length) {
+
+      container.innerHTML = '<p class="empty">No products added yet.</p>';
+
+    }
+
+
+
+    products.forEach(product => {
+
+      const card = document.createElement("article");
+
+      card.className = "product";
+
+
+
+      const firstImage = product.colors?.[0]?.imageUrl
+
+        ? "https://nighty-shop-backend.onrender.com" + product.colors[0].imageUrl
+
+        : "";
+
+
+
+      const img = document.createElement("img");
+
+      img.alt = product.name || "Product";
+
+      img.src = firstImage;
+
+      img.onerror = () => {
+
+        img.style.display = "none";
+
+      };
+
+
+
+      const body = document.createElement("div");
+
+      body.className = "product-body";
+
+
+
+      const heading = document.createElement("h4");
+
+      heading.textContent = product.name || "Unnamed product";
+
+
+
+      const details = document.createElement("p");
+
+      details.textContent = "₹" + product.price + " · Stock: " + product.stock;
+
+
+
+      const sizes = document.createElement("p");
+
+      sizes.textContent = "Sizes: " + (product.sizes || []).join(", ");
+
+
+
+      const colors = document.createElement("p");
+
+      colors.textContent = "Colours: " + (product.colors || [])
+
+        .map(color => color.colorName).join(", ");
+
+
+
+      const actions = document.createElement("div");
+
+      actions.className = "product-actions";
+
+
+
+      const deleteButton = document.createElement("button");
+
+      deleteButton.className = "btn danger";
+
+      deleteButton.textContent = "Delete";
+
+      deleteButton.onclick = () => deleteProduct(product.id);
+
+
+
+      actions.append(deleteButton);
+
+      body.append(heading, details, sizes, colors, actions);
+
+      card.append(img, body);
+
+      container.appendChild(card);
+
+    });
+
+
+
+    document.getElementById("totalProducts").textContent = products.length;
+
+    document.getElementById("totalStock").textContent =
+
+      products.reduce((sum, product) => sum + Number(product.stock || 0), 0);
+
+
+
+    document.getElementById("backendStatus").textContent = "🟢 Connected";
+
+  } catch (error) {
+
+    container.innerHTML = '<p class="empty">Cannot load products. Check Spring Boot.</p>';
+
+    document.getElementById("backendStatus").textContent = "🔴 Offline";
+
+    console.error(error);
+
+  }
+
+}
+
+
+
+async function deleteProduct(id) {
+
+  if (!confirm("Delete this product?")) return;
+
+
+
+  try {
+
+    const response = await authFetch(`${API_URL}/${id}`, { method: "DELETE" });
+
+    if (!response.ok) throw new Error("Delete failed.");
+
+
+
+    await loadProducts();
+
+    await refreshDashboard();
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+
+// Load orders from backend
+
+async function loadOrders() {
+
+  const list = document.getElementById("ordersList");
+
+  const summary = document.getElementById("ordersSummary");
+
+  list.innerHTML = '<p class="empty">Loading orders...</p>';
+
+
+
+  try {
+
+    const response = await authFetch(ORDERS_URL);
+
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+
+
+    orders = await response.json();
+
+    renderOrders();
+
+    refreshDashboard();
+
+    renderCustomers();
+
+  } catch (error) {
+
+    list.innerHTML = '<p class="empty">Cannot load orders. Check Spring Boot and /api/orders.</p>';
+
+    summary.textContent = "";
+
+    console.error(error);
+
+  }
+
+}
+
+
+
+function parseItems(order) {
+
+  if (Array.isArray(order.items)) return order.items;
+
+
+
+  if (typeof order.itemsJson === "string" && order.itemsJson.trim()) {
+
+    try {
+
+      const parsed = JSON.parse(order.itemsJson);
+
+      return Array.isArray(parsed) ? parsed : [];
+
+    } catch {
+
+      return [];
+
+    }
+
+  }
+
+  return [];
+
+}
+
+
+
+function renderOrders() {
+
+  const list = document.getElementById("ordersList");
+
+  const summary = document.getElementById("ordersSummary");
+
+
+
+  summary.textContent = orders.length + " order(s) found.";
+
+  list.innerHTML = "";
+
+
+
+  if (!orders.length) {
+
+    list.innerHTML = '<p class="empty">No orders received yet.</p>';
+
+    return;
+
+  }
+
+
+
+  [...orders].reverse().forEach(order => {
+
+    const card = document.createElement("article");
+
+    card.className = "order-card";
+
+
+
+    const head = document.createElement("div");
+
+    head.className = "order-head";
+
+
+
+    const title = document.createElement("h3");
+
+    title.textContent = "Order #" + order.id;
+
+
+
+    const badge = document.createElement("span");
+
+    badge.className = "badge";
+
+    badge.textContent = order.status || "Pending";
+
+
+
+    head.append(title, badge);
+
+
+
+    const details = document.createElement("div");
+
+    details.className = "order-details";
+
+
+
+    const detailValues = [
+
+      ["Customer", order.customerName],
+
+      ["Phone", order.phone],
+
+      ["Email", order.email],
+
+      ["Address", order.address],
+
+      ["City", order.city],
+
+      ["Pincode", order.pincode],
+
+      ["Payment", order.paymentMethod],
+
+      ["Total", "₹" + (order.total ?? 0)],
+
+      ["Date", order.orderDate ? new Date(order.orderDate).toLocaleString() : "-"]
+
+    ];
+
+
+
+    detailValues.forEach(([label, value]) => {
+
+      const item = document.createElement("div");
+
+      const strong = document.createElement("strong");
+
+      strong.textContent = label + ": ";
+
+      item.append(strong, document.createTextNode(value ?? "-"));
+
+      details.appendChild(item);
+
+    });
+
+
+
+    const itemsBox = document.createElement("div");
+
+    itemsBox.className = "order-items";
+
+
+
+    const items = parseItems(order);
+
+    if (!items.length) {
+
+      itemsBox.textContent = "Item details are not available in the order response.";
+
+    } else {
+
+      const title = document.createElement("strong");
+
+      title.textContent = "Ordered Items";
+
+      itemsBox.appendChild(title);
+
+
+
+      items.forEach(item => {
+
+        const line = document.createElement("div");
+
+        line.textContent =
+
+          (item.productName || item.name || "Product") +
+
+          " · Colour: " + (item.colorName || item.color || "-") +
+
+          " · Size: " + (item.size || "-") +
+
+          " · Qty: " + (item.quantity ?? 1) +
+
+          " · ₹" + (item.price ?? 0);
+
+        itemsBox.appendChild(line);
+
+      });
+
+    }
+
+
+
+    const statusRow = document.createElement("div");
+
+    statusRow.className = "status-row";
+
+
+
+    const statusLabel = document.createElement("strong");
+
+    statusLabel.textContent = "Update Status:";
+
+
+
+    const select = document.createElement("select");
+
+    ["Pending", "Confirmed", "Packed", "Shipped", "Delivered", "Cancelled"]
+
+      .forEach(status => {
+
+        const option = document.createElement("option");
+
+        option.value = status;
+
+        option.textContent = status;
+
+        option.selected = status === (order.status || "Pending");
+
+        select.appendChild(option);
+
+      });
+
+
+
+    select.addEventListener("change", async () => {
+
+      select.disabled = true;
+
+      try {
+
+        const result = await authFetch(`${ORDERS_URL}/${order.id}/status`, {
+
+          method: "PATCH",
+
+          headers: { "Content-Type": "application/json" },
+
+          body: JSON.stringify({ status: select.value })
+
+        });
+
+
+
+        if (!result.ok) throw new Error("Status update failed.");
+
+
+
+        await loadOrders();
+
+      } catch (error) {
+
+        alert(error.message);
+
+        select.disabled = false;
+
+      }
+
+    });
+
+
+
+    statusRow.append(statusLabel, select);
+
+    card.append(head, details, itemsBox, statusRow);
+
+    list.appendChild(card);
+
+  });
+
+}
+
+
+
+// Customers from received orders
+
+function renderCustomers() {
+
+  const body = document.getElementById("customersBody");
+
+  const empty = document.getElementById("customersEmpty");
+
+  const search = (document.getElementById("customerSearch")?.value || "").toLowerCase();
+
+
+
+  const customerMap = new Map();
+
+
+
+  orders.forEach(order => {
+
+    const key = order.phone || order.email || order.customerName || String(order.id);
+
+    if (!customerMap.has(key)) {
+
+      customerMap.set(key, { ...order, orderCount: 0 });
+
+    }
+
+    customerMap.get(key).orderCount++;
+
+  });
+
+
+
+  const customers = [...customerMap.values()].filter(customer =>
+
+    [customer.customerName, customer.phone, customer.email]
+
+      .some(value => String(value || "").toLowerCase().includes(search))
+
+  );
+
+
+
+  body.innerHTML = "";
+
+  empty.style.display = customers.length ? "none" : "block";
+
+
+
+  customers.forEach(customer => {
+
+    const row = document.createElement("tr");
+
+
+
+    [
+
+      customer.customerName || "-",
+
+      customer.phone || "-",
+
+      customer.email || "-",
+
+      [customer.address, customer.city, customer.pincode].filter(Boolean).join(", ") || "-",
+
+      customer.orderCount
+
+    ].forEach(value => {
+
+      const cell = document.createElement("td");
+
+      cell.textContent = value;
+
+      row.appendChild(cell);
+
+    });
+
+
+
+    body.appendChild(row);
+
+  });
+
+}
+
+
+
+// Dashboard stats
+
+async function refreshDashboard() {
+
+  if (!products.length) await loadProducts();
+
+  if (!orders.length) {
+
+    try {
+
+      const response = await authFetch(ORDERS_URL);
+
+      if (response.ok) orders = await response.json();
+
+    } catch {}
+
+  }
+
+
+
+  document.getElementById("totalProducts").textContent = products.length;
+
+  document.getElementById("totalStock").textContent =
+
+    products.reduce((sum, product) => sum + Number(product.stock || 0), 0);
+
+
+
+  document.getElementById("totalOrders").textContent = orders.length;
+
+  document.getElementById("pendingOrders").textContent =
+
+    orders.filter(order => (order.status || "Pending") === "Pending").length;
+
+
+
+  document.getElementById("totalSales").textContent =
+
+    "₹" + orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+
+
+
+  const recent = document.getElementById("recentOrders");
+
+  recent.innerHTML = "";
+
+
+
+  if (!orders.length) {
+
+    recent.innerHTML = '<p class="empty">No orders received yet.</p>';
+
+    return;
+
+  }
+
+
+
+  [...orders].reverse().slice(0, 5).forEach(order => {
+
+    const row = document.createElement("div");
+
+    row.style.cssText = "padding:14px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap";
+
+
+
+    const info = document.createElement("div");
+
+    info.textContent = "Order #" + order.id + " · " + (order.customerName || "Customer");
+
+
+
+    const total = document.createElement("strong");
+
+    total.textContent = "₹" + (order.total ?? 0) + " · " + (order.status || "Pending");
+
+
+
+    row.append(info, total);
+
+    recent.appendChild(row);
+
+  });
+
+}
+
+
+
+function logout() {
+
+  // This only returns to the customer page; it is not secure authentication.
+
+  if (confirm("Admin panel-ai vittu veliya pogalama?")) {
+
+    window.location.href = "index.html";
+
+  }
+
+}
+
+
+
+// Products and orders load only after successful admin login.
+
+</script>
+
+</body>
+
+</html>

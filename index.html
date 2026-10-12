@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D&A Textiles | Nighty Collection</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#fff8fb;color:#333}
+header{background:#fff;min-height:75px;padding:12px 7%;display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 2px 12px #00000014;position:sticky;top:0;z-index:100}
+.logo{color:#b42368;font-size:25px;font-weight:bold;white-space:nowrap}
+nav{display:flex;align-items:center;gap:25px;flex-wrap:wrap}
+nav a{text-decoration:none;color:#333;font-weight:500}
+nav a:hover{color:#d63384}
+.cart-btn{background:#d63384;color:white!important;padding:10px 18px;border-radius:25px}
+.hero{min-height:430px;padding:50px 8%;display:flex;align-items:center;justify-content:space-between;gap:35px;background:linear-gradient(135deg,#ffe4ef,#fff)}
+.hero-content{max-width:550px}
+.hero-content h1{font-size:48px;color:#b42368;margin-bottom:15px}
+.hero-content p{font-size:18px;line-height:1.6;color:#555;margin-bottom:25px}
+.shop-btn{background:#d63384;color:white;border:none;padding:14px 28px;border-radius:30px;cursor:pointer;font-size:16px}
+.shop-btn:hover,.view-btn:hover,.add-cart:hover{background:#b42368}
+.hero-img{width:330px;height:370px;object-fit:cover;border-radius:20px;box-shadow:0 10px 30px #00000026}
+.products-section{padding:55px 7%}
+.section-title{text-align:center;margin-bottom:35px}
+.section-title h2{font-size:32px;color:#b42368;margin-bottom:8px}
+.section-title p{color:#777}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px}
+.product-card{background:white;border-radius:15px;overflow:hidden;box-shadow:0 4px 15px #00000014;transition:.3s}
+.product-card:hover{transform:translateY(-6px);box-shadow:0 8px 22px #0000001f}
+.product-card img{width:100%;height:320px;object-fit:cover;background:#f7eaf0}
+.product-info{padding:18px}
+.product-info h3{font-size:19px;margin-bottom:8px}
+.price{color:#d63384;font-size:21px;font-weight:bold;margin-bottom:12px}
+.stock{color:#198754;font-size:14px;margin-bottom:12px}
+.view-btn{width:100%;border:none;padding:12px;background:#d63384;color:white;border-radius:8px;cursor:pointer;font-size:15px}
+.no-products{text-align:center;padding:45px 20px;display:none;color:#777}
+.no-products h3{color:#b42368;margin-bottom:10px;font-size:24px}
+.status-message{text-align:center;padding:24px;color:#777}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-content{width:900px;max-width:100%;max-height:90vh;overflow-y:auto;background:white;border-radius:18px;padding:25px;display:flex;gap:35px;position:relative}
+.close{position:absolute;top:8px;right:18px;font-size:32px;cursor:pointer;color:#555;z-index:5}
+.product-left,.product-right{width:50%}
+.product-left>img{width:100%;height:480px;object-fit:cover;border-radius:15px;background:#f7eaf0}
+.product-right{padding:15px 5px}
+.product-right h2{color:#b42368;font-size:29px;margin-bottom:10px;padding-right:30px}
+.description{color:#666;line-height:1.6;margin-bottom:15px}
+.product-price{color:#d63384;font-size:27px;font-weight:bold;margin-bottom:20px}
+.label{display:block;font-weight:bold;margin:18px 0 10px}
+.colors{display:flex;gap:12px;flex-wrap:wrap}
+.color-option{width:78px;text-align:center;cursor:pointer}
+.color-option img{width:68px;height:75px;object-fit:cover;border-radius:9px;border:2px solid transparent;background:#f7eaf0}
+.color-option.active img{border:3px solid #d63384}
+.color-option span{display:block;margin-top:5px;font-size:13px}
+.sizes{display:flex;gap:10px;flex-wrap:wrap}
+.size{border:1px solid #ccc;padding:10px 17px;border-radius:7px;cursor:pointer;background:white}
+.size:hover{border-color:#d63384}
+.size.active{background:#d63384;color:white;border-color:#d63384}
+.quantity{display:flex;align-items:center;gap:15px}
+.quantity button{width:35px;height:35px;border:none;background:#f1d5e3;border-radius:6px;cursor:pointer;font-size:18px}
+#quantity{font-weight:bold;font-size:17px}
+.add-cart{width:100%;margin-top:25px;padding:14px;border:none;border-radius:8px;background:#d63384;color:white;font-size:17px;cursor:pointer}
+footer{background:#2d1824;color:white;text-align:center;padding:30px;margin-top:20px}
+footer h3{color:#ff72ae;margin-bottom:8px}
+@media(max-width:700px){
+ header{padding:14px 4%;flex-direction:column}
+ .logo{font-size:21px}
+ nav{gap:12px;justify-content:center}
+ nav a{font-size:13px}
+ .hero{flex-direction:column;text-align:center;gap:30px}
+ .hero-content h1{font-size:35px}
+ .hero-img{width:250px;height:300px}
+ .products-section{padding:38px 5%}
+ .modal-content{flex-direction:column;gap:15px;padding:20px}
+ .product-left,.product-right{width:100%}
+ .product-left>img{height:330px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">D&amp;A Textiles</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#products">Nighties</a>
+    <a href="#about">About</a>
+    <a href="cart.html" class="cart-btn">🛒 Cart (<span id="cartCount">0</span>)</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Beautiful Nighties</h1>
+    <p>Comfortable, stylish and affordable nighties for everyday comfort.</p>
+    <button class="shop-btn" onclick="scrollToProducts()">Shop Now</button>
+  </div>
+  <img class="hero-img" src="https://images.unsplash.com/photo-1618244972963-dbee1a7edc95?auto=format&amp;fit=crop&amp;w=600&amp;q=80" alt="Nighty Collection">
+</section>
+
+<section class="products-section" id="products">
+  <div class="section-title">
+    <h2>Our Nighty Collection</h2>
+    <p>Choose your favourite nighty</p>
+  </div>
+  <div class="products" id="productContainer">
+    <p class="status-message">Loading products...</p>
+  </div>
+  <div class="no-products" id="noProducts">
+    <h3>No Products Available</h3>
+    <p>New nighties will be added soon.</p>
+  </div>
+</section>
+
+<div class="modal" id="productModal" onclick="if(event.target===this) closeProduct()">
+  <div class="modal-content">
+    <span class="close" onclick="closeProduct()">&times;</span>
+    <div class="product-left">
+      <img id="mainProductImage" src="" alt="Nighty">
+    </div>
+    <div class="product-right">
+      <h2 id="modalProductName"></h2>
+      <p class="description" id="modalDescription"></p>
+      <div class="product-price" id="modalPrice"></div>
+      <span class="label">🎨 Select Colour</span>
+      <div class="colors" id="colorContainer"></div>
+      <span class="label">📏 Select Size</span>
+      <div class="sizes" id="sizeContainer"></div>
+      <span class="label">Quantity</span>
+      <div class="quantity">
+        <button onclick="decreaseQuantity()">−</button>
+        <span id="quantity">1</span>
+        <button onclick="increaseQuantity()">+</button>
+      </div>
+      <button class="add-cart" onclick="addToCart()">🛒 Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<footer id="about">
+  <h3>D&amp;A Textiles</h3>
+  <p>Quality Nighties at Affordable Prices</p><br>
+  <p>© 2026 D&amp;A Textiles. All Rights Reserved.</p>
+</footer>
+
+<script>
+const API_BASE = "https://nighty-shop-backend.onrender.com";
+let products = [];
+let selectedProduct = null;
+let selectedColor = null;
+let selectedSize = null;
+let quantity = 1;
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function getImageUrl(path) {
+  if (!path) return "";
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) return path;
+  return API_BASE + (path.startsWith("/") ? path : "/" + path);
+}
+
+async function loadProducts() {
+  const container = document.getElementById("productContainer");
+  const noProducts = document.getElementById("noProducts");
+  container.innerHTML = '<p class="status-message">Loading products...</p>';
+  noProducts.style.display = "none";
+
+  try {
+    const response = await fetch(`${API_BASE}/api/products`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    products = (Array.isArray(data) ? data : []).map(product => ({
+      ...product,
+      colors: (product.colors || []).map(color => ({
+        ...color,
+        name: color.colorName || color.name || "Default",
+        image: getImageUrl(color.imageUrl || color.image)
+      })),
+      sizes: Array.isArray(product.sizes) ? product.sizes : [],
+      stock: Number(product.stock || 0),
+      price: Number(product.price || 0)
+    }));
+
+    displayProducts();
+  } catch (error) {
+    console.error("Product loading error:", error);
+    container.innerHTML = '<p class="status-message">Products load aagala. Backend running-ah nu check panni page refresh pannunga.</p>';
+  }
+}
+
+function displayProducts() {
+  const container = document.getElementById("productContainer");
+  const noProducts = document.getElementById("noProducts");
+  container.innerHTML = "";
+
+  if (!products.length) {
+    noProducts.style.display = "block";
+    return;
+  }
+  noProducts.style.display = "none";
+
+  products.forEach(product => {
+    const firstImage = product.colors?.[0]?.image || "";
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    const image = document.createElement("img");
+    image.src = firstImage;
+    image.alt = product.name || "Nighty";
+    image.onerror = () => { image.style.display = "none"; };
+
+    const info = document.createElement("div");
+    info.className = "product-info";
+    const title = document.createElement("h3");
+    title.textContent = product.name || "Nighty";
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = "₹" + product.price;
+    const stock = document.createElement("div");
+    stock.className = "stock";
+    stock.textContent = product.stock > 0 ? `✓ In Stock (${product.stock})` : "Out of Stock";
+    const button = document.createElement("button");
+    button.className = "view-btn";
+    button.textContent = "View Product";
+    button.disabled = product.stock <= 0;
+    button.style.opacity = button.disabled ? ".6" : "1";
+    button.onclick = () => openProduct(product.id);
+
+    info.append(title, price, stock, button);
+    card.append(image, info);
+    container.appendChild(card);
+  });
+}
+
+function openProduct(id) {
+  selectedProduct = products.find(product => Number(product.id) === Number(id));
+  if (!selectedProduct) return;
+
+  selectedColor = null;
+  selectedSize = null;
+  quantity = 1;
+  document.getElementById("modalProductName").textContent = selectedProduct.name || "Nighty";
+  document.getElementById("modalDescription").textContent = selectedProduct.description || "Beautiful and comfortable nighty.";
+  document.getElementById("modalPrice").textContent = "₹" + selectedProduct.price;
+  document.getElementById("quantity").textContent = quantity;
+  displayColors();
+  displaySizes();
+  document.getElementById("productModal").style.display = "flex";
+}
+
+function displayColors() {
+  const container = document.getElementById("colorContainer");
+  container.innerHTML = "";
+  const colors = selectedProduct?.colors || [];
+
+  if (!colors.length) {
+    selectedColor = { name: "Default", image: "" };
+    document.getElementById("mainProductImage").src = "";
+    return;
+  }
+
+  colors.forEach((color, index) => {
+    const option = document.createElement("div");
+    option.className = "color-option";
+    const img = document.createElement("img");
+    img.src = color.image || "";
+    img.alt = color.name;
+    img.onerror = () => { img.style.visibility = "hidden"; };
+    const label = document.createElement("span");
+    label.textContent = color.name;
+    option.append(img, label);
+    if (index === 0) {
+      option.classList.add("active");
+      selectedColor = color;
+      document.getElementById("mainProductImage").src = color.image || "";
+    }
+    option.onclick = () => {
+      container.querySelectorAll(".color-option").forEach(item => item.classList.remove("active"));
+      option.classList.add("active");
+      selectedColor = color;
+      document.getElementById("mainProductImage").src = color.image || "";
+    };
+    container.appendChild(option);
+  });
+}
+
+function displaySizes() {
+  const container = document.getElementById("sizeContainer");
+  container.innerHTML = "";
+  const sizes = selectedProduct?.sizes || [];
+
+  if (!sizes.length) {
+    selectedSize = "Standard";
+    const fallback = document.createElement("div");
+    fallback.className = "size active";
+    fallback.textContent = "Standard";
+    container.appendChild(fallback);
+    return;
+  }
+
+  sizes.forEach(size => {
+    const option = document.createElement("div");
+    option.className = "size";
+    option.textContent = size;
+    option.onclick = () => {
+      container.querySelectorAll(".size").forEach(item => item.classList.remove("active"));
+      option.classList.add("active");
+      selectedSize = size;
+    };
+    container.appendChild(option);
+  });
+}
+
+function increaseQuantity() {
+  if (selectedProduct && quantity < selectedProduct.stock) {
+    quantity++;
+    document.getElementById("quantity").textContent = quantity;
+  }
+}
+function decreaseQuantity() {
+  if (quantity > 1) {
+    quantity--;
+    document.getElementById("quantity").textContent = quantity;
+  }
+}
+
+function addToCart() {
+  if (!selectedProduct) return;
+  if (!selectedColor) {
+    alert("Please select a colour");
+    return;
+  }
+  if (!selectedSize) {
+    alert("Please select a size");
+    return;
+  }
+  if (selectedProduct.stock < 1 || quantity > selectedProduct.stock) {
+    alert("This product is out of stock");
+    return;
+  }
+
+  const cartItem = {
+    productId: selectedProduct.id,
+    name: selectedProduct.name,
+    price: selectedProduct.price,
+    image: selectedColor.image || "",
+    color: selectedColor.name,
+    size: selectedSize,
+    quantity
+  };
+
+  cart.push(cartItem);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  alert("🛒 Product added to cart!");
+  closeProduct();
+}
+
+function updateCartCount() {
+  const total = cart.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+  document.getElementById("cartCount").textContent = total;
+}
+function closeProduct() {
+  document.getElementById("productModal").style.display = "none";
+}
+function scrollToProducts() {
+  document.getElementById("products").scrollIntoView({ behavior: "smooth" });
+}
+function openCart() {
+  window.location.href = "cart.html";
+}
+
+loadProducts();
+updateCartCount();
+</script>
+</body>
+</html>
